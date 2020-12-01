@@ -58,10 +58,56 @@ import VueRouter from 'vue-router'
         },
 
         {
+            path: "/admin",
+            name: "admin",
+            component: importComponent('DashboardLayoutAdmin'),
+            children: [
+                //Dashboard
+                {
+                    path: "/admin/dashboardAdmin",
+                    name: "DashboardAdmin",
+                    meta: { title: 'DashboardAdmin' },
+                    component: importComponent('Admin/Dashboard'),
+                },
+                {
+                    path: "/admin/item",
+                    name: "Item List",
+                    meta: { title: 'Item List' },
+                    component: importComponent('Admin/List'),
+                },
+                {
+                    path: "/admin/order",
+                    name: "Order",
+                    meta: { title: 'Order' },
+                    component: importComponent('Admin/Order'),
+                },
+                {
+                    path: "/admin/history",
+                    name: "History",
+                    meta: { title: 'Order' },
+                    component: importComponent('Admin/History'),
+                },
+                {
+                    path: "/admin/promo",
+                    name: "Promo",
+                    meta: { title: 'Promo' },
+                    component: importComponent('Admin/Promo'),
+                },
+            ],
+        },
+
+        {
             path: "/login",
             name: "Login",
             meta: {title: 'Login'},
             component: importComponent('Login'),
+        },
+
+        {
+            path: "/admin/loginAdmin",
+            name: "LoginAdmin",
+            meta: { title: 'LoginAdmin' },
+            component: importComponent('LoginAdmin'),
         },
         {
             path: '*',
@@ -77,7 +123,7 @@ router.beforeEach((to, from, next) => {
         next({ path: '/login' })
     }
     else if(to.name == 'Login' && localStorage.getItem('token') != ''){
-        next({ path: 'profil'})
+        next({ path: '/profile'})
     }
     next()
 });

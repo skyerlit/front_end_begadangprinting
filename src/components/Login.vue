@@ -259,7 +259,7 @@ export default {
                 this.load = false;
                 this.clear();
                 this.$router.push({
-                    name: "Profil",
+                    name: "Profile",
                 });
             }
           })

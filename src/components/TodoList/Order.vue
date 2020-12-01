@@ -276,31 +276,33 @@ export default {
         this.deleteId = id;
         this.dialogDelete = true;
     },
-    // update(){
-    //     this.ngeupdate.append('idPelanggan', localStorage.getItem('id'));
-        
-    //     var url = this.$api + '/order/' + this.editId;
-    //     this.load = true
-    //     this.$http.put(url, newData,{
-    //             headers:{
-    //                 'Authorization': 'Bearer ' + localStorage.getItem('token')
-    //             }
-    //     }).then(response => {
-    //         this.error_message = response.data.message;
-    //         this.color="green"
-    //         this.snackbar=true;
-    //         this.load = false;
-    //         this.close();
-    //         this.readData(); //mengambil data
-    //         this.resetForm();
-    //         this.inputType = 'Tambah';
-    //     }).catch(error => {
-    //         this.error_message = error.response.data.message;
-    //         this.color = "red"
-    //         this.snackbar = true;
-    //         this.load = false;
-    //     })
-    // },
+    update(){
+        //this.ngeupdate.append('idPelanggan', localStorage.getItem('id'));
+        //this.ngeupdate.append('')
+
+
+        var url = this.$api + '/order/' + this.editId;
+        this.load = true
+        this.$http.put(url,this.ngeupdate,{
+                headers:{
+                    'Authorization': 'Bearer ' + localStorage.getItem('token')
+                }
+        }).then(response => {
+            this.error_message = response.data.message;
+            this.color="green"
+            this.snackbar=true;
+            this.load = false;
+            this.close();
+            this.readData(); //mengambil data
+            this.resetForm();
+            this.inputType = 'Tambah';
+        }).catch(error => {
+            this.error_message = error.response.data.message;
+            this.color = "red"
+            this.snackbar = true;
+            this.load = false;
+        })
+    },
   },
 
 

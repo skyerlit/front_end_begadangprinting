@@ -1,6 +1,6 @@
 <template>
   <v-main class="list-UGD">
-    <h3 class="text-h3 font-weight-medium mb-5">Order List</h3>
+    <h3 class="text-h3 font-weight-medium mb-5">History</h3>
 
     <v-card>
       <v-card-title>
