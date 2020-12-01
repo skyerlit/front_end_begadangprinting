@@ -46,12 +46,20 @@
 
             <v-select
               v-model="formTodo.namaItem"
+              :items="namaItemss"
+              label="Paper"
+              required
+            >
+            </v-select>
+
+            <!--<v-select
+              v-model="formTodo.namaItem"
               :items="['Kertas A4', 'Kertas F4']"
               label="Paper"
               required
-            ></v-select>
+            ></v-select>-->
 
-            <v-select
+             <v-select
               v-model="formTodo.jenisWarna"
               :items="['Colored', 'Black and White']"
               label="Color"
@@ -137,6 +145,7 @@ export default {
       deleteId: '',
       editId: '',
       dasarPath: 'http://localhost:8000/storage/fileUser/',
+      namaItemss:[],
       headers: [
         {
           text: "Category",
@@ -303,11 +312,22 @@ export default {
             this.load = false;
         })
     },
+    readNamaItem(){
+        var url = this.$api + '/itemByName';
+        this.$http.get(url, {
+                headers:{
+                    'Authorization': 'Bearer ' + localStorage.getItem('token')
+                }
+            }).then(response => {
+                this.namaItemss = response.data.data;
+        })
+    },
   },
 
 
   mounted(){
     this.readData();
+    this.readNamaItem();
     },
 };
 </script>
