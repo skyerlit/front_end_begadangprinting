@@ -26,10 +26,10 @@ import VueRouter from 'vue-router'
                 },
                     // To do list
                 {
-                    path: "/profil",
-                    name: "Profil",
+                    path: "/profile",
+                    name: "Profile",
                     meta: {title: 'Profile'},
-                    component: importComponent('TodoList/Profil'),
+                    component: importComponent('TodoList/Profile'),
                 },
                 {
                     path: "/order",
@@ -38,9 +38,9 @@ import VueRouter from 'vue-router'
                     component: importComponent('TodoList/Order'),
                 },
                 {
-                    path: "/list",
-                    name: "Order List",
-                    component: importComponent('TodoList/List'),
+                    path: "/history",
+                    name: "History",
+                    component: importComponent('TodoList/History'),
                 },
                 {
                     path: "/promo",
@@ -48,11 +48,11 @@ import VueRouter from 'vue-router'
                     component: importComponent('TodoList/Promo'),
                 },
                 
-                {
-                    path: "/register",
-                    name: "Register",
-                    component: importComponent('TodoList/Register'),
-                },
+                // {
+                //     path: "/register",
+                //     name: "Register",
+                //     component: importComponent('TodoList/Register'),
+                // },
                 
             ]
         },

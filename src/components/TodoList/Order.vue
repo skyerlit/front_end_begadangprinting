@@ -19,10 +19,10 @@
       <v-data-table :headers="headers" :items="orders" :search="search">
       
         <template v-slot:[`item.actions`]="{ item }">
-          <v-icon color="info" class="mr-2" @click="setFormEdit(item)">
+          <v-icon color="info" class="mr-2" @click="editHandler(item)">
             mdi-pencil
           </v-icon>
-          <v-icon color="error" @click="deleteItemConfirm(item)">
+          <v-icon color="error" @click="deleteHandler(item.id)">
             mdi-delete
           </v-icon>
         </template>
@@ -46,7 +46,7 @@
 
             <v-select
               v-model="formTodo.namaItem"
-              :items="['A3', 'A4', 'A5']"
+              :items="['Kertas A4', 'Kertas F4']"
               label="Paper"
               required
             ></v-select>
@@ -71,14 +71,14 @@
               required
             ></v-text-field>    
             
-            <v-file-input
-                v-model="filePesan" 
+            <!--<v-file-input
                 @change="onFileSelected" 
                 color="deep-purple accent-4" 
                 label="File input" 
                 placeholder="Select your files" 
                 outlined>
-            </v-file-input>
+            </v-file-input>-->
+            <input type="file" @change="onFileSelected">
 
           </v-container>
         </v-card-text>
@@ -87,7 +87,7 @@
           <v-btn color="blue darken-1" text @click="cancel">
             Cancel
           </v-btn>
-          <v-btn color="blue darken-1" text @click="save(idEdit)">
+          <v-btn color="blue darken-1" text @click="setForm">
             Save
           </v-btn>
         </v-card-actions>
@@ -105,12 +105,15 @@
           <v-btn color="green darken-1" text @click="cancelDelete">
             Tidak
           </v-btn>
-          <v-btn color="red darken-1" text @click="deleteItem()">
+          <v-btn color="red darken-1" text @click="deleteData">
             Ya
           </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-snackbar v-model="snackbar" :color="color" timeout="10000" bottom>
+        {{error_message}}
+    </v-snackbar>
   </v-main>
 </template>
 <script>
@@ -118,12 +121,22 @@ export default {
   name: "List",
   data() {
     return {
+      load:false,
+      inputType:'Tambah',
       search: null,
       dialog: false,    
       dialogDelete: false,
       items:[],
-      //orders:[],
-
+      orders:[],
+      selectedFile:null,
+      masukin: new FormData,
+      ngeupdate: new FormData,
+      snackbar:false,
+      error_message: '',
+      color:'',
+      deleteId: '',
+      editId: '',
+      dasarPath: 'http://localhost:8000/storage/fileUser/',
       headers: [
         {
           text: "Category",
@@ -139,45 +152,60 @@ export default {
         { text: "Actions", value: "actions" },
       ],
 
-      orders: [
-        {
-          kategori: "Book",
-          namaItem: "A3",
-          jenisWarna: "Color",
-          jenisServis: "Delivery",
-          jumlah: "1",
-          total: "Rp 50.000",   
-        },
-        
-      ],
       formTodo: {
-          category: null,
-          paper: null,
-          color: null,
-          service: null,
-          amount: null,
-          price: null,
+          kategori: null,
+          namaItem: null,
+          jenisWarna: null,
+          jenisServis: null,
+          jumlah: null,
       },
     };
   },
   methods: {
-    save(idEdit = null) {
-      idEdit == null ? this.add() : this.edit(idEdit);
-      this.resetForm();
-      this.dialog = false;
+    setForm(){
+        if(this.inputType === 'Tambah'){
+            this.save()
+        }else{
+            this.update()
+        }
+    },
+    save(){
+        this.masukin.append('idPelanggan', localStorage.getItem('id'));
+        this.masukin.append('kategori', this.formTodo.kategori);
+        this.masukin.append('namaItem', this.formTodo.namaItem);
+        this.masukin.append('jenisWarna', this.formTodo.jenisWarna);
+        this.masukin.append('jenisServis', this.formTodo.jenisServis);
+        this.masukin.append('jumlah', this.formTodo.jumlah);
+        this.masukin.append('filePesan', this.selectedFile);
+
+        var url = this.$api + '/order/'
+        this.load = true
+        this.$http.post(url, this.masukin,{
+                headers:{
+                    'Authorization': 'Bearer ' + localStorage.getItem('token')
+                }
+        }).then(response => {
+            this.error_message = response.data.message;
+            this.color = "green"
+            this.snackbar = true;
+            this.load = false;
+            this.close();
+            this.readData(); //mengambil data
+            this.resetForm();
+        }).catch(error => {
+            this.error_message = error.response.data.message;
+            this.color = "red"
+            this.snackbar = true;
+            this.load = false;
+        })
+        this.dialog=false;
+        this.readData();
     },
     cancel() {
       this.resetForm();
+      this.readData();
+      this.inputType = 'Tambah';
       this.dialog = false;
-    },
-    setFormEdit(item) {
-      this.idEdit = this.todos.indexOf(item);
-      this.formTodo.category = item.category;
-      this.formTodo.paper = item.paper;
-      this.formTodo.color = item.color;
-      this.formTodo.service = item.service;
-      this.formTodo.amount = item.amount;
-      this.dialog = true;
     },
     resetForm() {
       this.formTodo = {
@@ -190,34 +218,15 @@ export default {
       };
       this.idEdit = null;
     },
-    // CREATE ===========================================
-    add() {
-      this.todos.push(this.formTodo);
-    },
-    // EDIT ===========================================
-    edit(idEdit) {
-      this.todos[idEdit].category = this.formTodo.category;
-      this.todos[idEdit].priority = this.formTodo.priority;
-      this.todos[idEdit].note = this.formTodo.note;
-      console.log(this.todos[idEdit]);
-    },
-    // DELETE ===========================================
-    deleteItemConfirm(item) {
-      this.idEdit = this.todos.indexOf(item);
-      this.dialogDelete = true;
-    },
+
     cancelDelete() {
       this.resetForm();
       this.dialogDelete = false;
     },
-    deleteItem() {
-      this.dialogRecycleBin.todos.push(this.todos[this.idEdit])
-      this.todos.splice(this.idEdit, 1);
-      this.resetForm();
-      this.dialogDelete = false;
-    },
+
     readData(){
-        var url = this.$api + '/order'
+        var url = this.$api + '/order/' + localStorage.getItem('id')
+        //var url = this.$api + '/orderProcessInAdmin'  //ini buat ngeshow semua pesanan yg msh proses
         this.$http.get(url, {
                 headers:{
                     'Authorization': 'Bearer ' + localStorage.getItem('token')
@@ -226,10 +235,77 @@ export default {
                 this.orders = response.data.data
         })
     },
+    onFileSelected(event){
+        this.selectedFile = event.target.files[0]
+    },
+    deleteData(){
+        //menghapus data
+        var url = this.$api + '/order/' + this.deleteId;
+        //data dihapus berdasarkan id
+        this.$http.delete(url, {
+            headers:{
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        }).then(response => {
+            this.error_message = response.data.message;
+            this.color="green"
+            this.snackbar=true;
+            this.load = false;
+            this.close();
+            this.readData(); //mengambil data
+            this.resetForm();
+            this.inputType = 'Tambah';
+        }).catch(error => {
+            this.error_message = error.response.data.message;
+            this.color="red"
+            this.snackbar=true;
+            this.load = false;
+        })
+    },
+    editHandler(item){
+        this.inputType = 'Ubah';
+        this.editId = item.id;
+        this.formTodo.kategori = item.kategori;
+        this.formTodo.namaItem = item.namaItem;
+        this.formTodo.jenisWarna = item.jenisWarna;
+        this.formTodo.jenisServis = item.jenisServis;
+        this.formTodo.jumlah = item.jumlah;
+        this.dialog = true;
+    },
+    deleteHandler(id){
+        this.deleteId = id;
+        this.dialogDelete = true;
+    },
+    // update(){
+    //     this.ngeupdate.append('idPelanggan', localStorage.getItem('id'));
+        
+    //     var url = this.$api + '/order/' + this.editId;
+    //     this.load = true
+    //     this.$http.put(url, newData,{
+    //             headers:{
+    //                 'Authorization': 'Bearer ' + localStorage.getItem('token')
+    //             }
+    //     }).then(response => {
+    //         this.error_message = response.data.message;
+    //         this.color="green"
+    //         this.snackbar=true;
+    //         this.load = false;
+    //         this.close();
+    //         this.readData(); //mengambil data
+    //         this.resetForm();
+    //         this.inputType = 'Tambah';
+    //     }).catch(error => {
+    //         this.error_message = error.response.data.message;
+    //         this.color = "red"
+    //         this.snackbar = true;
+    //         this.load = false;
+    //     })
+    // },
   },
 
+
   mounted(){
-        this.readData();
-},
+    this.readData();
+    },
 };
 </script>
