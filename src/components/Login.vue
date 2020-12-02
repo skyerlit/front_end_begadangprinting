@@ -150,7 +150,7 @@ export default {
         <v-flex xs12 sm6 elevation-6>
           <v-toolbar class="grey darken-3">
             <v-toolbar-title class="grey--text">
-              <h1>Met dteng y bossque, xixixi</h1>
+              <h1>LOGIN USER</h1>
             </v-toolbar-title>
           </v-toolbar>
           <v-card>

@@ -15,12 +15,17 @@
       </v-card-title>
 
       <v-data-table :headers="headers" :items="products" :search="search">
+        <template v-slot:[`item.gabunganlink`]="{ item }">
+          <a :href="dasarPath + item.filePesan">FILE</a>
+        </template>
         <template v-slot:[`item.actions`]="{ item }">
           <v-btn small @click="deleteHandler(item.id)"> delete </v-btn>
         </template>
       </v-data-table>
     </v-card>
 
+   <!-- <a href="http://localhost:8000/storage/fileUser/zwE9VuAqvluLCIuf52yiVKHjcha7mSE8JkTCTAV2.docx">
+    bla</a>-->
 
     <v-dialog v-model="dialogConfirm" persistent max-width="400px">
       <v-card>
@@ -61,6 +66,7 @@ export default {
       search: null,
       dialog: false,
       dialogConfirm: false,
+      dasarPath: 'http://localhost:8000/storage/fileUser/',
       headers: [
         {
           text: "ID",
@@ -71,10 +77,11 @@ export default {
         { text: "Tanggal Transaksi", value: "created_at" },
         { text: "Nama Item", value: "namaItem" },
         { text: "Jumlah", value: "jumlah" },
-        // { text: "Total Harga", value: "total" },
+        //{ text: "Total Harga", value: "total" },
         { text: "harga", value: "jenisWarna" },
         { text: "Status", value: "statusPesan" },
         { text: "harga", value: "jenisServis" },
+        { text: "File Link", value: "gabunganlink"},
         { text: "Actions", value: "actions" },
       ],
       product: new FormData(),
@@ -109,7 +116,7 @@ export default {
       this.$http
         .get(url, {
           headers: {
-            Authorization: "Bearer " + localStorage.getItem("token"),
+            Authorization: "Bearer " + localStorage.getItem("tokenAdmin"),
           },
         })
         .then((response) => {
@@ -164,7 +171,7 @@ export default {
       this.$http
         .put(url, newData, {
           headers: {
-            Authorization: "Bearer " + localStorage.getItem("token"),
+            Authorization: "Bearer " + localStorage.getItem("tokenAdmin"),
           },
         })
         .then((response) => {
@@ -195,7 +202,7 @@ export default {
       this.$http
         .put(url, newData, {
           headers: {
-            Authorization: "Bearer " + localStorage.getItem("token"),
+            Authorization: "Bearer " + localStorage.getItem("tokenAdmin"),
           },
         })
         .then((response) => {

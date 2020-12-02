@@ -116,14 +116,14 @@ export default {
       dialogConfirm: false,
       headers: [
         {
-          text: "Nama produk",
+          text: "Item ID",
           align: "start",
           sortable: true,
           value: "id",
         },
-        { text: "Satuan", value: "namaItem" },
-        { text: "Harga jual", value: "kategori" },
-        { text: "stok", value: "satuan" },
+        { text: "Item Name", value: "namaItem" },
+        { text: "Category", value: "kategori" },
+        { text: "Satuan", value: "satuan" },
         { text: "stok", value: "stok" },
         { text: "harga", value: "harga" },
         { text: "Actions", value: "actions" },
@@ -157,7 +157,7 @@ export default {
       this.$http
         .get(url, {
           headers: {
-            Authorization: "Bearer " + localStorage.getItem("token"),
+            Authorization: "Bearer " + localStorage.getItem("tokenAdmin"),
           },
         })
         .then((response) => {
@@ -178,7 +178,7 @@ export default {
       this.$http
         .post(url, this.product, {
           headers: {
-            Authorization: "Bearer " + localStorage.getItem("token"),
+            Authorization: "Bearer " + localStorage.getItem("tokenAdmin"),
           },
         })
         .then((response) => {
@@ -211,7 +211,7 @@ export default {
       this.$http
         .put(url, newData, {
           headers: {
-            Authorization: "Bearer " + localStorage.getItem("token"),
+            Authorization: "Bearer " + localStorage.getItem("tokenAdmin"),
           },
         })
         .then((response) => {
@@ -239,7 +239,7 @@ export default {
       this.$http
         .delete(url, {
           headers: {
-            Authorization: "Bearer " + localStorage.getItem("token"),
+            Authorization: "Bearer " + localStorage.getItem("tokenAdmin"),
           },
         })
         .then((response) => {

@@ -29,7 +29,7 @@
       </v-data-table>
     </v-card>
 
-    <v-dialog v-model="dialog" persistent max-width="600px">
+    <v-dialog v-model="dialog" persistent max-width="650px">
       <v-card>
         <v-card-title>
           <span class="headline">Order Form</span>
@@ -287,12 +287,19 @@ export default {
     },
     update(){
         //this.ngeupdate.append('idPelanggan', localStorage.getItem('id'));
-        //this.ngeupdate.append('')
+        this.ngeupdate.append('kategori',this.formTodo.kategori);
+        this.ngeupdate.append('namaItem', this.formTodo.namaItem)
+        this.ngeupdate.append('jenisWarna', this.formTodo.jenisWarna);
+        this.ngeupdate.append('jenisServis', this.formTodo.jenisServis);
+        this.ngeupdate.append('jumlah', this.formTodo.jumlah);
 
+        if(this.selectedFile!=null){
+            this.ngeupdate.append('filePesan', this.selectedFile);
+        }
 
-        var url = this.$api + '/order/' + this.editId;
+        var url = this.$api + '/order/' + this.editId + '?_method=PUT';
         this.load = true
-        this.$http.put(url,this.ngeupdate,{
+        this.$http.post(url,this.ngeupdate,{
                 headers:{
                     'Authorization': 'Bearer ' + localStorage.getItem('token')
                 }

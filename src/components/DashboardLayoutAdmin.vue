@@ -67,6 +67,17 @@ export default {
             ],
   }),
 
+  methods:{
+    logout() {
+            localStorage.setItem('idAdmin', '');
+            localStorage.setItem('tokenAdmin', '');
+
+            this.$router.push({
+                name: 'LoginAdmin',
+            });
+      },
+  },
+
   computed: {
     platform() {
       return "$" + this.user.platform;

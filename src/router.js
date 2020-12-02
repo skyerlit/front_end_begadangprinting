@@ -109,22 +109,30 @@ import VueRouter from 'vue-router'
             meta: { title: 'LoginAdmin' },
             component: importComponent('LoginAdmin'),
         },
-        {
-            path: '*',
-            redirect: '/'
+        // {
+        //     path: '*',
+        //     redirect: '/'
             
-        },
+        // },
     ]
 });
 
 router.beforeEach((to, from, next) => {
     document.title = to.meta.title
-    if(to.name != 'Login' && localStorage.getItem('token') == ''){
-        next({ path: '/login' })
+
+    
+    // if(to.name != 'Login' && localStorage.getItem('token') == ''){
+    //     next({ path: '/login' })
+    // }
+    // else if(to.name == 'Login' && localStorage.getItem('token') != ''){
+    //     next({ path: '/profile'})
+    // }
+
+    if(to.name == 'LoginAdmin' && localStorage.getItem('tokenAdmin' == '')){
+        next({ path: '/admin/loginAdmin' })
     }
-    else if(to.name == 'Login' && localStorage.getItem('token') != ''){
-        next({ path: '/profile'})
-    }
+
+    
     next()
 });
 

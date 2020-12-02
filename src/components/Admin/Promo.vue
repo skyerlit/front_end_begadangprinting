@@ -140,7 +140,7 @@ export default {
       this.$http
         .get(url, {
           headers: {
-            Authorization: "Bearer " + localStorage.getItem("token"),
+            Authorization: "Bearer " + localStorage.getItem("tokenAdmin"),
           },
         })
         .then((response) => {
@@ -159,7 +159,7 @@ export default {
       this.$http
         .post(url, this.product, {
           headers: {
-            Authorization: "Bearer " + localStorage.getItem("token"),
+            Authorization: "Bearer " + localStorage.getItem("tokenAdmin"),
           },
         })
         .then((response) => {
@@ -190,7 +190,7 @@ export default {
       this.$http
         .put(url, newData, {
           headers: {
-            Authorization: "Bearer " + localStorage.getItem("token"),
+            Authorization: "Bearer " + localStorage.getItem("tokenAdmin"),
           },
         })
         .then((response) => {
@@ -218,7 +218,7 @@ export default {
       this.$http
         .delete(url, {
           headers: {
-            Authorization: "Bearer " + localStorage.getItem("token"),
+            Authorization: "Bearer " + localStorage.getItem("tokenAdmin"),
           },
         })
         .then((response) => {

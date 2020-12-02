@@ -5,7 +5,7 @@
         <v-flex xs12 sm6 elevation-6>
           <v-toolbar class="grey darken-3">
             <v-toolbar-title class="grey--text">
-              <h1>Met dteng y bossque, xixixi</h1>
+              <h1>LOGIN ADMIN</h1>
             </v-toolbar-title>
           </v-toolbar>
           <v-card>
@@ -90,28 +90,38 @@ export default {
         //cek apakah data yang akan dikirim sudah valid
         this.load = true;
         this.$http
-          .post(this.$api + "/login", {
+          .post(this.$api + "/loginAdmin", {
             email: this.email,
             password: this.password,
           })
           .then((response) => {
-            localStorage.setItem("id", response.data.user.id); //menyimpan id user yang sedang login
-            localStorage.setItem("token", response.data.access_token);
-            //menyimpan auth token
-            this.error_message = response.data.message;
-            this.color = "green";
-            this.snackbar = true;
-            this.load = false;
-            this.clear();
-            this.$router.push({
-              name: "DashboardAdmin",
-            });
+            if(response.data.user.status == 'user'){
+                this.error_message = 'Anda login sebagai user';
+                this.color = "red";
+                this.snackbar = true;
+                this.$router.push({
+                    name: "LoginAdmin",
+                });
+
+            }else{
+                localStorage.setItem("idAdmin", response.data.user.id); //menyimpan id user yang sedang login
+                localStorage.setItem("tokenAdmin", response.data.access_token);
+                //menyimpan auth token
+                this.error_message = response.data.message;
+                this.color = "green";
+                this.snackbar = true;
+                this.load = false;
+                this.clear();
+                this.$router.push({
+                  name: "DashboardAdmin",
+                });
+            }
           })
           .catch((error) => {
             this.error_message = error.response.data.message;
             this.color = "red";
             this.snackbar = true;
-            localStorage.removeItem("token");
+            localStorage.removeItem("tokenAdmin");
             this.load = false;
           });
       }
