@@ -53,6 +53,12 @@ import VueRouter from 'vue-router'
                 //     name: "Register",
                 //     component: importComponent('TodoList/Register'),
                 // },
+
+                {
+                    path: "/about",
+                    name: "About",
+                    component: importComponent('TodoList/About'),
+                },
                 
             ]
         },
@@ -109,11 +115,17 @@ import VueRouter from 'vue-router'
             meta: { title: 'LoginAdmin' },
             component: importComponent('LoginAdmin'),
         },
-        // {
-        //     path: '*',
-        //     redirect: '/'
+        {
+            path: "/landingpage",
+            name: "LandingPage",
+            meta: { title: 'LandingPage' },
+            component: importComponent('LandingPage'),
+        },
+        {
+            path: '*',
+            redirect: '/'
             
-        // },
+        },
     ]
 });
 
@@ -128,12 +140,12 @@ router.beforeEach((to, from, next) => {
     //     next({ path: '/profile'})
     // }
 
-    if(to.name == 'LoginAdmin' && localStorage.getItem('tokenAdmin' == '')){
-        next({ path: '/admin/loginAdmin' })
-    }
+    // if(to.name == 'LoginAdmin' && localStorage.getItem('tokenAdmin' == '')){
+    //     next({ path: '/admin/loginAdmin' })
+    // }
 
     
-    next()
+     next()
 });
 
 export default router;

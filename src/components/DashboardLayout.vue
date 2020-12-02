@@ -1,19 +1,25 @@
 <template>
   <div class="dashboard">
     <!-- Buat Navbar -->
-    <v-app-bar color="grey darken-4" dark app>
+    <v-app-bar color="white" light app style="opacity: 0.8">
       <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
 
-      <v-toolbar-title>Begadang Printing</v-toolbar-title>
+      <v-toolbar-title ><img src="~@/components/logo.png" style="width: 40px; height:40px; position: relative; top: 3px;" >
+      <font style="position: fixed; top: 15px; opacity: 1 !important " size="5">
+        <font color="#D80F6D">Begadang</font>
+        <font color="#0D8A9E">Printing</font>
+      </font></v-toolbar-title>
       <v-spacer></v-spacer>
 
-      <v-btn icon @click="logout"><v-icon>mdi-logout</v-icon></v-btn>
+      <v-btn @click="about">About</v-btn>
+      <v-btn @click="logout">Log Out</v-btn>
+      
 
     </v-app-bar>
     <!-- -->
 
     <!-- Buat Sidebar -->
-    <v-navigation-drawer v-model="drawer" absolute temporary>
+    <v-navigation-drawer v-model="drawer" absolute temporary color="#0D8A9E">
       <!-- Cashier Icon dan nama -->
       <v-img
         max-height="150"
@@ -44,7 +50,7 @@
     </v-navigation-drawer>
     <!--  -->
 
-    <div class="grey lighten-4 fullheight pa-5">
+    <div class="grey lighten-4 fullheight pa-10" :style="{ backgroundImage: 'url(' + require('@/components/background.jpg') + ')', height: '100%', width: '100vw', position: 'fixed', top: '0', objectFit: 'cover', backgroundSize: 'cover'} ">
       <router-view></router-view>
     </div>
   </div>
@@ -62,11 +68,11 @@ export default {
       svgPath: mdiAccount,
       props:true,
       items: [
-        { title: "Dashboard", to: "/" },
-        { title: "Profile", to: "/profile" },
+        { title: "Dashboard", to: "/"},
+        { title: "Profile", to: "/profile"},
         { title: "Order", to: "/order" },
         { title: "History", to: "/history" },
-        { title: "Promo", to: "/promo" },
+        { title: "Promo", to: "/promo" }
         //{ title: "Login", to: "/login" },
         //{ title: "Register", to: "/register" },
       ],
@@ -81,6 +87,12 @@ export default {
                 name: 'Login',
             });
         },
+      
+    about() {
+          this.$router.push({
+            name:'About',
+          });
+    }
   },
 
   computed: {
@@ -92,7 +104,13 @@ export default {
 </script>
 
 <style scoped>
+
 .fullheight {
   min-height: 100vh !important;
+  height: 100%;
+  width: 100vw;
+  position: fixed;
+  top: 0;
+
 }
 </style>
