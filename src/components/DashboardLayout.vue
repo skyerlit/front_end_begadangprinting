@@ -1,56 +1,65 @@
 <template>
   <div class="dashboard">
-    <!-- Buat Navbar -->
-    <v-app-bar color="white" light app style="opacity: 0.8">
-      <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
-
-      <v-toolbar-title ><img src="~@/components/logo.png" style="width: 40px; height:40px; position: relative; top: 3px;" >
-      <font style="position: fixed; top: 15px; opacity: 1 !important " size="5">
-        <font color="#D80F6D">Begadang</font>
-        <font color="#0D8A9E">Printing</font>
-      </font></v-toolbar-title>
-      <v-spacer></v-spacer>
-
-      <v-btn @click="about">About</v-btn>
-      <v-btn @click="logout">Log Out</v-btn>
-      
-
-    </v-app-bar>
-    <!-- -->
-
-    <!-- Buat Sidebar -->
-    <v-navigation-drawer v-model="drawer" absolute temporary color="#0D8A9E">
-      <!-- Cashier Icon dan nama -->
-      <v-img
-        max-height="150"
-        max-width="250"
-        src="https://www.flaticon.com/free-icon/customer_3225069?term=customer&page=1&position=30&related_item_id=3225069"
-      ></v-img>
-
-<v-img
-          v-bind="props"
-          gradient="to top right, rgba(100,115,201,.7), rgba(25,32,72,.7)"
-        ></v-img>
-    
+    <v-navigation-drawer v-model="drawer" class="fullheight" width="256" app :color = warna1>
       <v-divider></v-divider>
-
-      <v-list dense nav>
-        <v-list-item
-          v-for="item in items"
-          :key="item.title"
-          link
-          tag="router-link"
-          :to="item.to"
-        >
-          <v-list-item-content>
-            <v-list-item-title>{{ item.title }}</v-list-item-title>
+      <v-list danse nav style="color: #42b983">
+        <v-list-item router to="/">
+          <v-list-item-action style="color: white">
+            <v-icon>mdi-package</v-icon>
+          </v-list-item-action>
+          <v-list-item-content style="color: white">
+            <v-list-item-title><h3>Dashboard</h3></v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item router to="/profile">
+          <v-list-item-action style="color: white">
+            <v-icon>mdi-account-circle </v-icon>
+          </v-list-item-action>
+          <v-list-item-content style="color: white">
+            <v-list-item-title><h3>Profile</h3></v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item router to="/order">
+          <v-list-item-action style="color: white">
+            <v-icon>mdi-cash-usd</v-icon>
+          </v-list-item-action>
+          <v-list-item-content style="color: white">
+            <v-list-item-title><h3>Order</h3></v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item router to="/history">
+          <v-list-item-action style="color: white">
+            <v-icon>mdi-history</v-icon>
+          </v-list-item-action>
+          <v-list-item-content style="color: white">
+            <v-list-item-title><h3>History</h3></v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item router to="/promo">
+          <v-list-item-action style="color: white">
+            <v-icon>mdi-check-circle</v-icon>
+          </v-list-item-action>
+          <v-list-item-content style="color: white">
+            <v-list-item-title><h3>Promo</h3></v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
-    <!--  -->
+    <v-app-bar app fixed height="75px" color="white" light style="opacity: 0.8">
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+      <v-toolbar-title ><img src="~@/components/TodoList/logo.png" style="width: 40px; height:40px; position: relative; top: 3px;" >
+        <font style="position: fixed; top: 15px; opacity: 1 !important " size="5">
+          <font color="#D80F6D">Begadang</font>
+          <font color="#0D8A9E">Printing</font>
+        </font></v-toolbar-title>
+      <VSpacer />
+      <v-toolbar-items>
+        <v-btn text router @click="about"><v-icon>mdi-account</v-icon></v-btn>
+        <v-btn text router @click="logout"><v-icon>mdi-power</v-icon></v-btn>
+      </v-toolbar-items>
+    </v-app-bar>
 
-    <div class="grey lighten-4 fullheight pa-10" :style="{ backgroundImage: 'url(' + require('@/components/background.jpg') + ')', height: '100%', width: '100vw', position: 'fixed', top: '0', objectFit: 'cover', backgroundSize: 'cover'} ">
+    <div class="fullheight pa-5" :style="{ backgroundImage: 'url(' + require('@/components/background.jpg') + ')', height: '100%', width: '100%', position: 'fixed', top: '0', objectFit: 'cover', backgroundSize: 'cover'} ">
       <router-view></router-view>
     </div>
   </div>
@@ -65,17 +74,9 @@ export default {
     return {
       drawer: false,
       group: null,
+      warna1: '#0D8A9E',
       svgPath: mdiAccount,
       props:true,
-      items: [
-        { title: "Dashboard", to: "/"},
-        { title: "Profile", to: "/profile"},
-        { title: "Order", to: "/order" },
-        { title: "History", to: "/history" },
-        { title: "Promo", to: "/promo" }
-        //{ title: "Login", to: "/login" },
-        //{ title: "Register", to: "/register" },
-      ],
     };
   },
   methods:{
@@ -87,7 +88,7 @@ export default {
                 name: 'Login',
             });
         },
-      
+
     about() {
           this.$router.push({
             name:'About',

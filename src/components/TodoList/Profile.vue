@@ -1,66 +1,31 @@
 <template>
     <v-main class="list">
         <h3 class="text-h3 font-weight-medium mb-5"> Profile</h3>
-
-        <v-card>
-            <v-card-title>
-                <v-spacer></v-spacer>
-
-            </v-card-title>
-        </v-card>
-            <v-card>  
-                <v-card-text>
-                    <v-container>
-                        <v-img
-                            max-height="150"
-                            max-width="250"
-                            :src="dasarPath + profile.fileUpload"
-                        ></v-img>
-                        <v-text-field
-                            v-model="profile.name"
-                            label="Nama"
-                            required
-                        ></v-text-field>
-                         <v-text-field
-                            v-model="profile.email"
-                            label="Email"
-                            disabled
-                        ></v-text-field>
-
-                        <input type="file" @change="onFileSelected">
-                       
-                        <v-checkbox v-model="checkboxPassword" hide-details label="Change Password?"></v-checkbox>
-                        <div v-show="checkboxPassword">
-                            <v-text-field 
-                                    v-model="form.password"
-                                    label="Old Password"
-                                    type="password"
-                            ></v-text-field>
-                            <v-text-field 
-                                    v-model="form.newPassword"
-                                    label="New Password"
-                                    required
-                                    type="password"
-                            ></v-text-field>
-                            <v-text-field 
-                                    v-model="form.newPasswordConfirm"
-                                    label="New Password Confirmation"
-                                    required
-                                    type="password"
-                            ></v-text-field>
-                        </div>
-                    </v-container>
-                </v-card-text>
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="blue darken-1" text @click="cancel">
-                        Cancel
-                    </v-btn>
-                    <v-btn color="blue darken-1" text @click="update">
-                        Save
-                    </v-btn>
-                </v-card-actions>
-            </v-card>
+          <v-card>
+              <v-card-text>
+                  <v-container>
+                      <v-img max-height="150" max-width="250" :src="dasarPath + profile.fileUpload"></v-img>
+                      <v-text-field v-model="profile.name" label="Nama" required></v-text-field>
+                      <v-text-field v-model="profile.email" label="Email" disabled></v-text-field>
+                      <input type="file" @change="onFileSelected">
+                      <v-checkbox v-model="checkboxPassword" hide-details label="Change Password?"></v-checkbox>
+                      <div v-show="checkboxPassword">
+                          <v-text-field v-model="form.password" label="Old Password" type="password"></v-text-field>
+                          <v-text-field v-model="form.newPassword" label="New Password" required type="password"></v-text-field>
+                          <v-text-field v-model="form.newPasswordConfirm" label="New Password Confirmation" required type="password"></v-text-field>
+                      </div>
+                  </v-container>
+              </v-card-text>
+              <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn color="blue darken-1" text @click="cancel">
+                      Cancel
+                  </v-btn>
+                  <v-btn color="blue darken-1" text @click="update">
+                      Save
+                  </v-btn>
+              </v-card-actions>
+          </v-card>
 
         <v-snackbar v-model="snackbar" :color="color" timeout="5000" bottom>
             {{error_message}}
@@ -83,7 +48,7 @@ export default {
             },
             checkboxPassword:false,
             form:{
-               
+
                 password:null,
                 newPassword:null,
                 newPasswordConfirm:null,
@@ -150,7 +115,7 @@ export default {
                 this.masukin.append('newPassword', this.form.newPassword);
                 this.masukin.append('newPasswordConfirm', this.form.newPasswordConfirm);
             }
-            
+
             var url = this.$api + '/profil/' + localStorage.getItem('id') + '?_method=PUT';
             this.load = true
             this.$http.post(url, this.masukin,{

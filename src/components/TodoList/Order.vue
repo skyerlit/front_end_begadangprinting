@@ -1,23 +1,16 @@
 <template>
   <v-main class="list-UGD">
     <h3 class="text-h3 font-weight-medium mb-5">Order List</h3>
-
     <v-card>
       <v-card-title>
-        <v-text-field
-          v-model="search"
-          append-icon="mdi-magnify"
-          label="Search"
-          single-line
-          hide-details
-        ></v-text-field>
+        <v-text-field v-model="search" append-icon="mdi-magnify" label="Search" single-line hide-details></v-text-field>
         <v-spacer></v-spacer>
         <v-btn color="success" dark @click="dialog = true">
           Tambah
         </v-btn>
       </v-card-title>
       <v-data-table :headers="headers" :items="orders" :search="search">
-      
+
         <template v-slot:[`item.actions`]="{ item }">
           <v-icon color="info" class="mr-2" @click="editHandler(item)">
             mdi-pencil
@@ -36,7 +29,7 @@
         </v-card-title>
         <v-card-text>
           <v-container>
-           
+
              <v-select
               v-model="formTodo.kategori"
               :items="['Brochure', 'Book', 'Card']"
@@ -77,13 +70,13 @@
               v-model="formTodo.jumlah"
               label="Amount"
               required
-            ></v-text-field>    
-            
+            ></v-text-field>
+
             <!--<v-file-input
-                @change="onFileSelected" 
-                color="deep-purple accent-4" 
-                label="File input" 
-                placeholder="Select your files" 
+                @change="onFileSelected"
+                color="deep-purple accent-4"
+                label="File input"
+                placeholder="Select your files"
                 outlined>
             </v-file-input>-->
             <input type="file" @change="onFileSelected">
@@ -132,7 +125,7 @@ export default {
       load:false,
       inputType:'Tambah',
       search: null,
-      dialog: false,    
+      dialog: false,
       dialogDelete: false,
       items:[],
       orders:[],

@@ -3,7 +3,7 @@
         <v-content>
             <v-container class="fill-height" fluid>
                 <v-row align="center" justify="center">
-                    <v-col cols="12" sm="8" md="8">
+                    <v-col cols="12" sm="6" md="6">
                         <v-card class="elevation-12">
                             <v-window v-model="step">
                                 <v-window-item :value="1">
@@ -15,24 +15,24 @@
                                                 <v-form v-model="valid" ref="form">
                                                     <v-text-field label="E-mail" prepend-icon="email" type="text" color="grey accent-3"  v-model="email" :rules="emailRules" required></v-text-field>
                                                     <v-text-field label="Password" prepend-icon="lock" type="password" color="grey accent-3" v-model="password" min="8" :rules="passwordRules" counter required></v-text-field>
-                                                
+
                                                     <div class="text-center mt-3">
                                                       <v-btn rounded color="red accent-3" dark @click="submit">Log In</v-btn>
                                                   </div>
                                                 </v-form>
                                                 <!-- <h5 class="text-center mt-3">Forget your password ?</h5> -->
                                             </v-card-text>
-                                            
+
                                         </v-col>
                                         <v-col cols="12" md="6" class="blue accent-3">
                                             <v-card-text class="white--text mt-12">
-                                            
+
                                                 <h1 class="text-center display-1">Begadang Printer</h1>
                                                 <h5 class="text-center">Enter your personel details and start journey with us</h5>
                                                 <h5 class="text-center">Not a member? </h5>
                                                 <h5 class="text-center">Create your account by click</h5>
                                             </v-card-text>
-                                            
+
                                             <div class="text-center">
                                                 <v-btn rounded outlined="" dark @click="step++">SIGN UP</v-btn>
                                             </div>
@@ -67,14 +67,14 @@
                                                 </div>
                                                 </v-form>
                                             </v-card-text>
-                        
+
                                         </v-col>
                                     </v-row>
                                 </v-window-item>
                             </v-window>
                         </v-card>
                     </v-col>
-                    
+
                 </v-row>
                 <v-snackbar v-model="snackbar" :color="color" timeout="2000" bottom>
                         {{error_message}}
@@ -132,7 +132,7 @@ export default {
             }else{
                 localStorage.setItem("id", response.data.user.id); //menyimpan id user yang sedang login
                 localStorage.setItem("token", response.data.access_token);
-                
+
                 //menyimpan auth token
                 this.error_message = response.data.message;
                 this.color = "green";
@@ -164,7 +164,7 @@ export default {
           .then((response) => {
               //localStorage.setItem("id", response.data.user.id); //menyimpan id user yang sedang login
               //localStorage.setItem("token", response.data.access_token);
-              
+
               //menyimpan auth token
               this.error_message = response.data.message;
               this.color = "green";
@@ -174,7 +174,7 @@ export default {
               this.$router.push({
                   name: "LandingPage",
               });
-            
+
           })
           .catch((error) => {
             this.error_message = error.response.data.message;
